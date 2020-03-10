@@ -2,7 +2,7 @@ package requests;
 
 import java.io.Serializable;
 
-public class GetMenuRequest extends Request implements Serializable {
+public class GetMenuRequest extends ClientRequest implements Serializable {
 
     private static final long serialVersionUID = 6529681234567857690L;
 

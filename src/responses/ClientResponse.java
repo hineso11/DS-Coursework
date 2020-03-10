@@ -2,13 +2,13 @@ package responses;
 
 import java.io.Serializable;
 
-public class Response implements Serializable {
+public class ClientResponse implements Serializable {
 
     private static final long serialVersionUID = 6529221234567857690L;
 
     private ResponseType type;
 
-    public Response(ResponseType type) {
+    public ClientResponse(ResponseType type) {
 
         this.type = type;
     }

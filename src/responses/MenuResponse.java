@@ -4,7 +4,7 @@ import models.Menu;
 
 import java.io.Serializable;
 
-public class MenuResponse extends Response implements Serializable {
+public class MenuResponse extends ClientResponse implements Serializable {
 
     private static final long serialVersionUID = 8929221234567857690L;
 

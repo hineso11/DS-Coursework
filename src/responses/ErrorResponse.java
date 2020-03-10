@@ -2,7 +2,7 @@ package responses;
 
 import java.io.Serializable;
 
-public class ErrorResponse extends Response implements Serializable {
+public class ErrorResponse extends ClientResponse implements Serializable {
 
     private static final long serialVersionUID = 8929221281097857690L;
 
