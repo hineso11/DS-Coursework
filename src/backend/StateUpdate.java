@@ -1,8 +1,10 @@
 package backend;
 
-import responses.ClientResponse;
+import responses.base.ClientResponse;
 
-public class StateUpdate {
+import java.io.Serializable;
+
+public class StateUpdate implements Serializable {
 
     private static final long serialVersionUID = 6529227638402857690L;
 
@@ -21,13 +23,5 @@ public class StateUpdate {
 
     public ClientResponse getNewClientResponse() {
         return newClientResponse;
-    }
-
-    public void setResponseId(int responseId) {
-        this.responseId = responseId;
-    }
-
-    public void setNewClientResponse(ClientResponse newClientResponse) {
-        this.newClientResponse = newClientResponse;
     }
 }

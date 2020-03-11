@@ -1,20 +1,21 @@
 package models;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Order {
+public class Order implements Serializable {
 
     private static final long serialVersionUID = 8929221234561097690L;
 
     private int id;
-    private HashMap<MenuItem, Integer> menuItemsByQuantity;
+    private HashMap<Integer, Integer> menuIdByQuantity;
     private String name;
     private String postcode;
 
-    public Order(int id, HashMap<MenuItem, Integer> menuItemsByQuantity, String name, String postcode) {
+    public Order(int id, HashMap<Integer, Integer> menuIdsByQuantity, String name, String postcode) {
 
         this.id = id;
-        this.menuItemsByQuantity = menuItemsByQuantity;
+        this.menuIdByQuantity = menuIdsByQuantity;
         this.name = name;
         this.postcode = postcode;
     }
@@ -27,8 +28,8 @@ public class Order {
         return name;
     }
 
-    public HashMap<MenuItem, Integer> getMenuItemsByQuantity() {
-        return menuItemsByQuantity;
+    public HashMap<Integer, Integer> getMenuIdByQuantity() {
+        return menuIdByQuantity;
     }
 
     public String getPostcode() {

@@ -1,8 +1,12 @@
 package server;
 
-import responses.ClientResponse;
+import responses.base.ClientResponse;
 
-public class BackendResponse {
+import java.io.Serializable;
+
+public class BackendResponse implements Serializable {
+
+    private static final long serialVersionUID = 8929221234558327690L;
 
     private ClientResponse clientResponse;
     private ServerState updatedState;

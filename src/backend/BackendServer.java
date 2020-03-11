@@ -1,12 +1,11 @@
 package backend;
 
-import com.sun.security.ntlm.Server;
 import models.Menu;
-import requests.ClientRequest;
-import requests.GetMenuRequest;
-import responses.ClientResponse;
-import responses.ErrorResponse;
-import responses.MenuResponse;
+import requests.base.ClientRequest;
+import requests.specific.GetMenuRequest;
+import responses.base.ClientResponse;
+import responses.errors.base.ErrorResponse;
+import responses.success.MenuResponse;
 import server.BackendResponse;
 import server.ServerState;
 
@@ -36,7 +35,6 @@ public class BackendServer implements BackendRemote {
 
         Registry registry = LocateRegistry.createRegistry(this.addressInformation.getPort());
         registry.bind(REGISTRY_NAME, stub);
-
     }
 
     public BackendResponse makeRequest(ClientRequest request, ServerState currentState, int id) throws RemoteException {
@@ -76,7 +74,7 @@ public class BackendServer implements BackendRemote {
 
     private ServerState propagateStateUpdate(StateUpdate stateUpdate, ServerState currentState) {
 
-        ArrayList<AddressInformation> updatedBackendAddresses = new ArrayList<AddressInformation>();
+        ArrayList<AddressInformation> updatedBackendAddresses = new ArrayList<>();
         // The updated state obviously has the current backend server in it
         updatedBackendAddresses.add(this.addressInformation);
 
@@ -100,8 +98,9 @@ public class BackendServer implements BackendRemote {
                     }
 
                 } catch (RemoteException | NotBoundException e) {
-                    System.err.println("Could not propagate state to backend server at " +
-                            backendAddress.getAddress() + ":" + String.valueOf(backendAddress.getPort()));
+                    System.err.println(String.format("Could not propagate state to backend server at %s:%d",
+                            backendAddress.getAddress(), backendAddress.getPort()));
+                    e.printStackTrace();
                 }
             }
         }

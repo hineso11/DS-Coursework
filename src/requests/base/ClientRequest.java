@@ -1,4 +1,6 @@
-package requests;
+package requests.base;
+
+import requests.RequestType;
 
 import java.io.Serializable;
 

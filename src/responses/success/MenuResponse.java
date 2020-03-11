@@ -1,6 +1,8 @@
-package responses;
+package responses.success;
 
 import models.Menu;
+import responses.ResponseType;
+import responses.base.ClientResponse;
 
 import java.io.Serializable;
 

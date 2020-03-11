@@ -4,5 +4,6 @@ import java.io.Serializable;
 
 public enum RequestType {
 
-    GET_MENU
+    GET_MENU,
+    PLACE_ORDER
 }

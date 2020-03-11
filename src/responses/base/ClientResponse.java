@@ -1,4 +1,6 @@
-package responses;
+package responses.base;
+
+import responses.ResponseType;
 
 import java.io.Serializable;
 

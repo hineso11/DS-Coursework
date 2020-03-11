@@ -2,9 +2,10 @@ package server;
 
 import backend.AddressInformation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ServerState {
+public class ServerState implements Serializable {
 
     private static final long serialVersionUID = 6529567838402857690L;
 

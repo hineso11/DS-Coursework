@@ -25,8 +25,8 @@ public class Menu implements Serializable {
         menuItems.add(new MenuItem(1, "Crispy Pork", 7.8));
         menuItems.add(new MenuItem(2, "Thai Green Curry", 8.4));
         menuItems.add(new MenuItem(3, "Pad Thai", 6.4));
-        menuItems.add(new MenuItem(1, "Jasmine rice", 2.4));
-        menuItems.add(new MenuItem(1, "River Prawns", 12.2));
+        menuItems.add(new MenuItem(4, "Jasmine rice", 2.4));
+        menuItems.add(new MenuItem(5, "River Prawns", 12.2));
 
         return new Menu(menuItems);
     }
