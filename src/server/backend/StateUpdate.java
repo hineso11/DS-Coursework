@@ -1,5 +1,6 @@
-package backend;
+package server.backend;
 
+import models.Order;
 import responses.base.ClientResponse;
 
 import java.io.Serializable;
@@ -10,11 +11,13 @@ public class StateUpdate implements Serializable {
 
     private int responseId;
     private ClientResponse newClientResponse;
+    private Order newOrder;
 
-    public StateUpdate(int responseId, ClientResponse newClientResponse) {
+    public StateUpdate(int responseId, ClientResponse newClientResponse, Order newOrder) {
 
         this.responseId = responseId;
         this.newClientResponse = newClientResponse;
+        this.newOrder = newOrder;
     }
 
     public int getResponseId() {
@@ -23,5 +26,9 @@ public class StateUpdate implements Serializable {
 
     public ClientResponse getNewClientResponse() {
         return newClientResponse;
+    }
+
+    public Order getNewOrder() {
+        return newOrder;
     }
 }

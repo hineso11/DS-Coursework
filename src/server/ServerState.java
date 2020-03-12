@@ -1,6 +1,6 @@
 package server;
 
-import backend.AddressInformation;
+import server.backend.AddressInformation;
 
 import java.io.Serializable;
 import java.util.ArrayList;

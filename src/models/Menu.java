@@ -30,4 +30,16 @@ public class Menu implements Serializable {
 
         return new Menu(menuItems);
     }
+
+    public MenuItem getItemForId(int id) {
+
+        for (MenuItem item : this.menuItems) {
+
+            if (item.getId() == id) {
+                return item;
+            }
+        }
+
+        return null;
+    }
 }

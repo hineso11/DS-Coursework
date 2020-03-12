@@ -1,11 +1,16 @@
-package backend;
+package server.backend;
 
 import models.Menu;
+import models.MenuItem;
+import models.Order;
 import requests.base.ClientRequest;
 import requests.specific.GetMenuRequest;
+import requests.specific.PlaceOrderRequest;
+import responses.ResponseType;
 import responses.base.ClientResponse;
 import responses.errors.base.ErrorResponse;
 import responses.success.MenuResponse;
+import responses.success.OrderResponse;
 import server.BackendResponse;
 import server.ServerState;
 
@@ -20,15 +25,17 @@ import java.util.HashMap;
 
 public class BackendServer implements BackendRemote {
 
-    public static final String REGISTRY_NAME = "backend";
+    public static final String REGISTRY_NAME = "server/backend";
 
     private AddressInformation addressInformation;
     private HashMap<Integer, ClientResponse> responseByIdMap;
+    private ArrayList<Order> orders;
 
     public BackendServer(AddressInformation addressInformation) throws AlreadyBoundException, RemoteException {
 
         this.addressInformation = addressInformation;
-        this.responseByIdMap = new HashMap<Integer, ClientResponse>();
+        this.responseByIdMap = new HashMap<>();
+        this.orders = new ArrayList<>();
 
         BackendRemote stub = (BackendRemote) UnicastRemoteObject.exportObject(this,
                 this.addressInformation.getPort());
@@ -54,6 +61,21 @@ public class BackendServer implements BackendRemote {
                 GetMenuRequest getMenuRequest = (GetMenuRequest) request;
                 clientResponse = new MenuResponse(Menu.fromSampleData());
                 break;
+            case PLACE_ORDER:
+                PlaceOrderRequest placeOrderRequest = (PlaceOrderRequest) request;
+
+                // Loop through each of the ids provided in the request and check they exist in the menu items
+                Menu menu = Menu.fromSampleData();
+                HashMap<MenuItem, Integer> menuItemsByQuantity = new HashMap<>();
+
+                for (int itemId : placeOrderRequest.getMenuIdsByQuantity().keySet()) {
+                    MenuItem item = menu.getItemForId(itemId);
+                    menuItemsByQuantity.put(item, placeOrderRequest.getMenuIdsByQuantity().get(itemId));
+                }
+
+                Order order = new Order(menuItemsByQuantity, placeOrderRequest.getName(), placeOrderRequest.getPostcode());
+                clientResponse = new OrderResponse(order);
+                break;
             default:
                 clientResponse = new ErrorResponse("Invalid Request type", "The specified request " +
                         "type does not exist on this server");
@@ -64,8 +86,17 @@ public class BackendServer implements BackendRemote {
         // Store the response in our record
         responseByIdMap.put(id, clientResponse);
 
+        // If this is an order response, then we need to store the result and include it in the state update
+        Order order = null;
+
+        if (clientResponse.getType() == ResponseType.ORDER) {
+
+            OrderResponse orderResponse = (OrderResponse) clientResponse;
+            order = orderResponse.getOrder();
+        }
+
         // Propagate the state update to the other backend servers
-        StateUpdate stateUpdate = new StateUpdate(id, clientResponse);
+        StateUpdate stateUpdate = new StateUpdate(id, clientResponse, order);
 
         ServerState updatedServerState = this.propagateStateUpdate(stateUpdate, currentState);
 
@@ -112,6 +143,11 @@ public class BackendServer implements BackendRemote {
 
         // Update the response record
         responseByIdMap.put(stateUpdate.getResponseId(), stateUpdate.getNewClientResponse());
+
+        // If there is a new order, then add this to the orders list
+        if (stateUpdate.getNewOrder() != null) {
+            orders.add(stateUpdate.getNewOrder());
+        }
 
         // Send the acknowledgement
         return true;

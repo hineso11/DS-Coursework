@@ -1,6 +1,7 @@
 package client;
 
-import backend.AddressInformation;
+import responses.success.OrderResponse;
+import server.backend.AddressInformation;
 import frontend.FrontendRemote;
 import frontend.FrontendServer;
 import models.MenuItem;
@@ -84,14 +85,14 @@ public class Client {
                         response = frontendRemote.makeRequest(new PlaceOrderRequest(menuIdsByQuantity,
                                 name, postcode));
                         handleResponse(response);
+                        break;
                     case 3:
                         userHasQuit = true;
                         break;
                 }
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Couldn't connect to the server. Please try again later.");
             }
-
         }
     }
 
@@ -111,12 +112,21 @@ public class Client {
                     System.out.println(String.format("(%d) %s- £%.2f", item.getId(), item.getName(), item.getPrice()));
                 }
                 break;
+            case ORDER:
+                OrderResponse orderResponse = (OrderResponse) clientResponse;
+                System.out.println("Order successfully placed for the following items:");
+
+                for (MenuItem item: orderResponse.getOrder().getMenuItemByQuantity().keySet()) {
+
+                    System.out.println(String.format("%s x %d", item.getName(), orderResponse.getOrder().getMenuItemByQuantity().get(item)));
+                }
+                break;
         }
     }
 
     private static void handleError(ErrorResponse errorResponse) {
 
-        System.out.println("Error: " + errorResponse.getReason());
-        System.out.println(errorResponse.getMessage());
+        System.err.println("Error: " + errorResponse.getReason());
+        System.err.println(errorResponse.getMessage());
     }
 }

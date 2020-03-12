@@ -3,5 +3,6 @@ package responses;
 public enum ResponseType {
 
     ERROR,
-    MENU
+    MENU,
+    ORDER
 }

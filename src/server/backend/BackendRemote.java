@@ -1,4 +1,4 @@
-package backend;
+package server.backend;
 
 import requests.base.ClientRequest;
 import server.BackendResponse;

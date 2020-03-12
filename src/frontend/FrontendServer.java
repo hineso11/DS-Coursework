@@ -1,8 +1,8 @@
 package frontend;
 
-import backend.AddressInformation;
-import backend.BackendRemote;
-import backend.BackendServer;
+import server.backend.AddressInformation;
+import server.backend.BackendRemote;
+import server.backend.BackendServer;
 import requests.base.ClientRequest;
 import responses.base.ClientResponse;
 import responses.errors.InternalServerErrorResponse;
@@ -42,7 +42,7 @@ public class FrontendServer implements FrontendRemote {
         // Attempt to find a backend server to act as the primary
         while (primaryAddress != null) {
 
-            // Attempt to get the response
+            // Attempt to get the response from this primary
             try {
 
                 Registry backendRegistry = LocateRegistry.getRegistry(primaryAddress.getAddress(),
@@ -61,9 +61,6 @@ public class FrontendServer implements FrontendRemote {
             } catch (NotBoundException | RemoteException e) {
                 // Else remove this backend server from the server state
                 this.serverState.getBackendAddresses().remove(primaryAddress);
-                System.out.println(String.format("Unable to connect to backend at %s:%d", primaryAddress.getAddress(),
-                        primaryAddress.getPort()));
-                System.out.println(e.toString());
             }
 
             primaryAddress = this.getPrimaryBackendServer();

@@ -7,32 +7,18 @@ public class Order implements Serializable {
 
     private static final long serialVersionUID = 8929221234561097690L;
 
-    private int id;
-    private HashMap<Integer, Integer> menuIdByQuantity;
+    private HashMap<MenuItem, Integer> menuItemByQuantity;
     private String name;
     private String postcode;
 
-    public Order(int id, HashMap<Integer, Integer> menuIdsByQuantity, String name, String postcode) {
+    public Order(HashMap<MenuItem, Integer> menuItemByQuantity, String name, String postcode) {
 
-        this.id = id;
-        this.menuIdByQuantity = menuIdsByQuantity;
+        this.menuItemByQuantity = menuItemByQuantity;
         this.name = name;
         this.postcode = postcode;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public HashMap<Integer, Integer> getMenuIdByQuantity() {
-        return menuIdByQuantity;
-    }
-
-    public String getPostcode() {
-        return postcode;
+    public HashMap<MenuItem, Integer> getMenuItemByQuantity() {
+        return menuItemByQuantity;
     }
 }

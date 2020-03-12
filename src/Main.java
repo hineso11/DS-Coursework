@@ -1,5 +1,5 @@
-import backend.AddressInformation;
-import backend.BackendServer;
+import server.backend.AddressInformation;
+import server.backend.BackendServer;
 import client.Client;
 import frontend.FrontendServer;
 import server.ServerState;
